@@ -1,0 +1,30 @@
+{
+    "name": "agilegeeks/eurid-epp",
+    "type": "library",
+    "description": "An EPP client for Eurid",
+    "keywords": ["epp","domains","registrar"],
+    "authors": [
+        {
+            "name": "Radu Boncea",
+            "email": "radu.boncea@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "https://github.com/agilegeeks/php-whois.git"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^4.8"
+    },
+    "require": {
+        "php": ">=5.4",
+        "agilegeeks/whois": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "AgileGeeks\\EPP\\Eurid\\": "src",
+         }
+    }
+}
