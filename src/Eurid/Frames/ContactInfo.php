@@ -27,6 +27,7 @@ XML;
 
     function getResult($dom){
         parent::getResult($dom);
+        //var_dump($dom->saveXML());exit;
         $result = new \stdClass();
         $resData_node = $dom->getElementsByTagName('resData')->item(0);
         $infData_node = $resData_node->getElementsByTagName('infData')->item(0);
@@ -46,6 +47,11 @@ XML;
 
 
         $result->name = $postalInfo_node->getElementsByTagName('name')->item(0)->firstChild->textContent;
+        if($postalInfo_node->getElementsByTagName('org')->length>0){
+            $result->org = $postalInfo_node->getElementsByTagName('org')->item(0)->firstChild->textContent;
+        }else{
+            $result->org=null;
+        }
         $result->city = $postalInfo_node->getElementsByTagName('city')->item(0)->firstChild->textContent;
         $result->pc = $postalInfo_node->getElementsByTagName('pc')->item(0)->firstChild->textContent;
         $result->cc = $postalInfo_node->getElementsByTagName('cc')->item(0)->firstChild->textContent;

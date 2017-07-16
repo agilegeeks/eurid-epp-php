@@ -83,7 +83,7 @@ XML;
                 $ip = '';
             }
             if ($ip==null) $ip = '';
-            $result->nameserver[$nameserver] = $ip;
+            $result->nameservers[$nameserver] = $ip;
         }
         return $result;
     }
