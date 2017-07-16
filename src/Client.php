@@ -14,13 +14,13 @@ use AgileGeeks\EPP\Eurid\Frames\ContactInfo;
 use AgileGeeks\EPP\Eurid\Frames\DomainInfo;
 
 
-require_once (__DIR__.'/Frames/autoload.php');
-require_once (__DIR__.'/Frame.php');
-require_once (__DIR__.'/../EPP/Client.php');
-require_once(__DIR__.'/Response.php');
+require_once (__DIR__.'/Eurid/Frames/autoload.php');
+require_once (__DIR__.'/Eurid/Frame.php');
+require_once (__DIR__.'/EPP/Client.php');
+require_once(__DIR__.'/Eurid/Response.php');
 
 
-class Eurid_Client extends EPP_Client {
+class Client extends EPP_Client {
 
 	private $connected;
 	private $logged_in;
