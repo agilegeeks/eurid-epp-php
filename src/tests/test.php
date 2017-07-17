@@ -1,15 +1,16 @@
 <?php
-use AgileGeeks\EPP\Eurid\Eurid_Client;
+use AgileGeeks\EPP\Eurid\Client as Eurid_Client;
 
-require ('../Eurid/Client.php');
+require ('../Client.php');
 
 $host = 'epp.tryout.registry.eu';
 $port = 700;
 $timeout = 10;
 $ssl = true;
-$user = 't00XXXXX';
-$pass = 'XXXXXX';
-$debug = false;
+$user = 'XXXXXX';
+$pass = 'XXXXXXXXX';
+$debug = true;
+
 
 $client = new Eurid_Client(
                             $host=$host,
@@ -45,8 +46,8 @@ $client->login();
 //                     $contact_type='registrant'
 // );
 // echo $registrant_id."\n";
-//
-//
+
+
 // $contact_data = $client->contactInfo($registrant_id);
 // var_dump($contact_data);
 
@@ -66,9 +67,8 @@ $client->login();
 //                     $contact_type='onsite'
 // );
 // echo $onsite_id."\n";
-//$client->logout();
 
-$domain_name = 'test-jump-1111.eu';
+// $domain_name = 'test-jump-5555.eu';
 // try {
 //     $result = $client->createDomain(
 //                             $domain=$domain_name,
@@ -86,23 +86,31 @@ $domain_name = 'test-jump-1111.eu';
 //                             );
 //     echo $result->crDate."\n";
 //     echo $result->exDate."\n";
-//
+
 // } catch (Exception $e) {
 //     echo $e->getMessage()."\n";
 //     print $e->getCode()."\n";
 // }
 
+// try {
+//     $result = $client->domainInfo($domain = $domain_name);
+
+// } catch (Exception $e) {
+//     echo $e->getMessage()."\n";
+//     print $e->getCode()."\n";
+// }
+// var_dump($result);
+
+$domain_name = 'test-jump-5555.eu';
 try {
-    $result = $client->domainInfo($domain = $domain_name);
+    $result = $client->renewDomain($domain_name, 1, '2022-11-01', $unit='y');
+    var_dump($result);
 
 } catch (Exception $e) {
     echo $e->getMessage()."\n";
     print $e->getCode()."\n";
 }
-var_dump($result);
 
-
-//$client->login();
 
 $client->logout();
  ?>

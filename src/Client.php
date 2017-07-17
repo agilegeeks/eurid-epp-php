@@ -13,6 +13,8 @@ use AgileGeeks\EPP\Eurid\Frames\DomainCreate;
 use AgileGeeks\EPP\Eurid\Frames\ContactInfo;
 use AgileGeeks\EPP\Eurid\Frames\DomainInfo;
 use AgileGeeks\EPP\Eurid\Frames\DomainUpdateNS;
+use AgileGeeks\EPP\Eurid\Frames\DomainRenew;
+
 
 
 require_once (__DIR__.'/Eurid/Frames/autoload.php');
@@ -211,7 +213,11 @@ class Client extends EPP_Client {
 	function deleteContact($contact) {
 	}
 
-	function renewDomain($domain, $period, $unit='y') {
+	function renewDomain($domain, $period, $curExpDate, $unit='y') {
+		$this->debug("renewing domain");
+        $command = new DomainRenew($domain, $period, $curExpDate, $unit);
+        $frame = new Frame($command);
+        return $this->request($frame);
 	}
 
 	function request($frame) {
