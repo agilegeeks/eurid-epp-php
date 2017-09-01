@@ -1,5 +1,5 @@
 {
-    "name": "agilegeeks/eurid-epp",
+    "name": "agilegeeks/eurid-epp-php",
     "type": "library",
     "description": "An EPP client for Eurid",
     "keywords": ["epp","domains","registrar"],
