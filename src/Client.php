@@ -12,6 +12,7 @@ use AgileGeeks\EPP\Eurid\Frames\ContactCreate;
 use AgileGeeks\EPP\Eurid\Frames\DomainCreate;
 use AgileGeeks\EPP\Eurid\Frames\ContactInfo;
 use AgileGeeks\EPP\Eurid\Frames\DomainInfo;
+use AgileGeeks\EPP\Eurid\Frames\DomainUpdateNS;
 
 
 require_once (__DIR__.'/Eurid/Frames/autoload.php');
@@ -186,6 +187,13 @@ class Client extends EPP_Client {
 	}
 
 	function updateDomain($domain, $add, $rem, $chg) {
+	}
+
+	function updateNameservers($domain, $add, $rem) {
+		$this->debug("updating domain nameservers");
+        $command = new DomainUpdateNS($domain, $add, $rem);
+        $frame = new Frame($command);
+        return $this->request($frame);
 	}
 
 	function updateContact($contact, $add, $rem, $chg) {
