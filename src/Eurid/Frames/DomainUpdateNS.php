@@ -20,32 +20,42 @@ class DomainUpdateNS extends Command {
     </command>
 XML;
 
-    function __construct($domain, $add = '', $rem = '') {
+    function __construct($domain, $add = array(), $rem = array()) {
+        $_add = '';
+        $_rem = '';
+
         if (!empty($add)) {
-            $add = "<domain:add>
-                        <domain:ns>
-                            <domain:hostAttr>
-                                <domain:hostName>$add</domain:hostName>
-                            </domain:hostAttr>
-                        </domain:ns>
-                    </domain:add>";
+            $_add = '<domain:add>
+                <domain:ns>';
+            
+            foreach ($add as $a) {
+                $_add .= "<domain:hostAttr>
+                    <domain:hostName>$a</domain:hostName>
+                </domain:hostAttr>";
+            }
+
+            $_add .= '</domain:ns>
+                </domain:add>';
         }
 
         if (!empty($rem)) {
-            $rem = "<domain:rem>
-                        <domain:ns>
-                            <domain:hostAttr>
-                                <domain:hostName>$rem</domain:hostName>
-                            </domain:hostAttr>
-                        </domain:ns>
-                    </domain:rem>";
+            $_rem = '<domain:rem>
+                        <domain:ns>';
+            foreach ($rem as $r) {
+                $_rem .= "<domain:hostAttr>
+                            <domain:hostName>$r</domain:hostName>
+                        </domain:hostAttr>";
+            }
+
+            $_rem .= '</domain:ns>
+                </domain:rem>';
         }
 
         $this->xml = sprintf(
             self::TEMPLATE,
             $domain,
-            $add,
-            $rem,
+            $_add,
+            $_rem,
             $this->clTRID()
         );
     }
