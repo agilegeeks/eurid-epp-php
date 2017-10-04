@@ -75,16 +75,19 @@ XML;
             $result->contacts[$node->getAttribute('type')] = $node->firstChild->textContent;
         }
 
-        foreach ($domain_ns_node->getElementsByTagName('hostAttr') as $node) {
-            $nameserver = $node->getElementsByTagName('hostName')->item(0)->firstChild->textContent;
-            if ($node->getElementsByTagName('hostAddr')->length>0){
-                $ip = $node->getElementsByTagName('hostAddr')->item(0)->firstChild->textContent;
-            }else{
-                $ip = '';
+        if ($domain_ns_node) {
+            foreach ($domain_ns_node->getElementsByTagName('hostAttr') as $node) {
+                $nameserver = $node->getElementsByTagName('hostName')->item(0)->firstChild->textContent;
+                if ($node->getElementsByTagName('hostAddr')->length>0){
+                    $ip = $node->getElementsByTagName('hostAddr')->item(0)->firstChild->textContent;
+                }else{
+                    $ip = '';
+                }
+                if ($ip==null) $ip = '';
+                $result->nameservers[$nameserver] = $ip;
             }
-            if ($ip==null) $ip = '';
-            $result->nameservers[$nameserver] = $ip;
         }
+        
         return $result;
     }
 
