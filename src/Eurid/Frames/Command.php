@@ -32,7 +32,7 @@ abstract class Command {
 
     function getResult($dom){
         $response = new Response($dom);
-        if ($response->code()!='1000' && $response->code()!='1500'){
+        if ($response->code()!='1000' && $response->code()!='1500'  && $response->code()!='1001'){
             $message = $response->message();
             if ($response->detailed_message()!=''){
                 $message .= ": ".$response->detailed_message();

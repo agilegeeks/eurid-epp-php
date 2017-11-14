@@ -14,6 +14,7 @@ use AgileGeeks\EPP\Eurid\Frames\ContactInfo;
 use AgileGeeks\EPP\Eurid\Frames\DomainInfo;
 use AgileGeeks\EPP\Eurid\Frames\DomainUpdateNS;
 use AgileGeeks\EPP\Eurid\Frames\DomainRenew;
+use AgileGeeks\EPP\Eurid\Frames\DomainDelete;
 
 
 
@@ -204,7 +205,11 @@ class Client extends EPP_Client {
 	function updateHost($host, $add, $rem, $chg) {
 	}
 
-	function deleteDomain($domain) {
+	function deleteDomain($domain, $delDate) {
+		$this->debug("setting deletion date for domain");
+        $command = new DomainDelete($domain, $delDate);
+        $frame = new Frame($command);
+        return $this->request($frame);
 	}
 
 	function deleteHost($host) {
