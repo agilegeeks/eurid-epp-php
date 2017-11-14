@@ -60,13 +60,20 @@ XML;
         $result->crDate = $infData_node->getElementsByTagName('crDate')->item(0)->firstChild->textContent;
         $result->upDate = $infData_node->getElementsByTagName('upDate')->item(0)->firstChild->textContent;
         $result->exDate = $infData_node->getElementsByTagName('exDate')->item(0)->firstChild->textContent;
-
+        
 
         $result->onHold = $extension_infData_node->getElementsByTagName('onHold')->item(0)->firstChild->textContent === 'true'? true: false;
         $result->quarantined = $extension_infData_node->getElementsByTagName('quarantined')->item(0)->firstChild->textContent === 'true'? true: false;
         $result->suspended = $extension_infData_node->getElementsByTagName('suspended')->item(0)->firstChild->textContent === 'true'? true: false;
         $result->seized = $extension_infData_node->getElementsByTagName('seized')->item(0)->firstChild->textContent === 'true'? true: false;
         $result->delayed = $extension_infData_node->getElementsByTagName('delayed')->item(0)->firstChild->textContent === 'true'? true: false;
+        
+        $result->delDate = '';
+        $deletion_date = $extension_infData_node->getElementsByTagName('deletionDate');
+        if ($deletion_date->length>0){
+            $result->delDate = $deletion_date->item(0)->firstChild->textContent;
+        }
+        
 
         foreach ($extension_infData_node->getElementsByTagName('contact') as $node) {
             $result->contacts[$node->getAttribute('type')] = $node->firstChild->textContent;
