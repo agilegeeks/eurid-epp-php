@@ -121,6 +121,16 @@ class Client extends EPP_Client
 
 	function domainTransferRequest($domain, $authInfo, $period, $unit = 'y')
 	{
+		$this->debug("transfering domain");
+		$command = new DomainTransfer(
+			$domain,
+			$authInfo,
+			$period,
+			$unit,
+		);
+		$frame = new Frame($command);
+		
+		return $this->request($frame);
 	}
 
 	function domainTransferApprove($domain)
