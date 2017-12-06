@@ -126,7 +126,7 @@ class Client extends EPP_Client
 			$domain,
 			$authInfo,
 			$period,
-			$unit,
+			$unit
 		);
 		$frame = new Frame($command);
 		
