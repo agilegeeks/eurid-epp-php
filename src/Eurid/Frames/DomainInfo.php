@@ -86,7 +86,15 @@ XML;
         if ($domain_ns_node) {
             foreach ($domain_ns_node->getElementsByTagName('hostAttr') as $node) {
                 $nameserver = $node->getElementsByTagName('hostName')->item(0)->firstChild->textContent;
-                $result->nameservers[] = $nameserver;
+                $ips = array();
+
+                if ($node->getElementsByTagName('hostAddr')) {
+                    foreach ($node->getElementsByTagName('hostAddr') as $ip) {
+                        $ips[] = $ip->textContent;
+                    }
+                }
+                
+                $result->nameservers[$nameserver] = array('ips' => $ips);
             }
         }
         

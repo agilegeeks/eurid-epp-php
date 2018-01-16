@@ -28,10 +28,17 @@ XML;
             $_add = '<domain:add>
                 <domain:ns>';
             
-            foreach ($add as $a) {
-                $_add .= "<domain:hostAttr>
-                    <domain:hostName>$a</domain:hostName>
-                </domain:hostAttr>";
+            foreach ($add as $k => $a) {
+                $_add .= "<domain:hostAttr>";
+                $_add .= "<domain:hostName>".$k."</domain:hostName>";
+
+                if (!empty($a['ips'])) {
+                    foreach ($a['ips'] as $ip) {
+                        $_add .= '<domain:hostAddr ip="'.$this->detect_ip_version($ip).'">'.$ip.'</domain:hostAddr>';
+                    }
+                }
+
+                $_add .= "</domain:hostAttr>";
             }
 
             $_add .= '</domain:ns>
@@ -41,10 +48,17 @@ XML;
         if (!empty($rem)) {
             $_rem = '<domain:rem>
                         <domain:ns>';
-            foreach ($rem as $r) {
-                $_rem .= "<domain:hostAttr>
-                            <domain:hostName>$r</domain:hostName>
-                        </domain:hostAttr>";
+            foreach ($rem as $k => $r) {
+                $_rem .= "<domain:hostAttr>";
+                $_rem .= "<domain:hostName>".$k."</domain:hostName>";
+
+                if (!empty($r['ips'])) {
+                    foreach ($r['ips'] as $ip) {
+                        $_rem.= '<domain:hostAddr ip="'.$this->detect_ip_version($ip).'">'.$ip.'</domain:hostAddr>';
+                    }
+                }
+
+                $_rem .= "</domain:hostAttr>";
             }
 
             $_rem .= '</domain:ns>
@@ -58,6 +72,17 @@ XML;
             $_rem,
             $this->clTRID()
         );
+    }
+
+    private function detect_ip_version($ip)
+    {
+        if (strpos($ip, '.') > 0) {
+            return 'v4';
+        } else if (strpos($ip, ':') > 0) {
+            return 'v6';
+        } else {
+            return false;
+        }
     }
 
     function getResult($dom){
