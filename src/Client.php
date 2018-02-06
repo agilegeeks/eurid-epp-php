@@ -2,6 +2,7 @@
 namespace AgileGeeks\EPP\Eurid;
 
 use AgileGeeks\EPP\EPP_Client;
+use AgileGeeks\EPP\EPP_Exception;
 use AgileGeeks\EPP\Eurid\Frame;
 use AgileGeeks\EPP\Eurid\Response;
 use AgileGeeks\EPP\Eurid\Frames\Greeting;
@@ -51,7 +52,13 @@ class Client extends EPP_Client
 		$this->user = $user;
 		$this->pass = $pass;
 
-		if ($host) $this->connect($host, $port, $timeout, $ssl, $context);
+		if ($host) {
+			try {
+				$this->connect($host, $port, $timeout, $ssl, $context);
+			} catch (EPP_Exception $e) {
+				throw new \Exception ($e->getMessage());
+			}
+		}
 		//if ($user && $pass) $this->login($user, $pass);
 	}
 

@@ -13,6 +13,7 @@ $GLOBALS['EPP_Client_Version'] = '0.0.4';
 * A simple client class for the Extensible Provisioning Protocol (EPP)
 * @package Net_EPP
 */
+
 class EPP_Client {
 
 	/**
@@ -35,13 +36,14 @@ class EPP_Client {
 	* @throws Exception on connection errors
 	* @return a string containing the server <greeting>
 	*/
+	
 	function connect($host, $port=700, $timeout=1, $ssl=true, $context=NULL) {
 		$target = sprintf('%s://%s:%d', ($ssl === true ? 'tls' : 'tcp'), $host, $port);
 		if (is_resource($context)) {
-			$result = stream_socket_client($target, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $context);
+			$result = @stream_socket_client($target, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $context);
 
 		} else {
-			$result = stream_socket_client($target, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT);
+			$result = @stream_socket_client($target, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT);
 		}
 		if ($result === False) {
 			throw new EPP_Exception("Error connecting to $target: $errstr (code $errno)");
