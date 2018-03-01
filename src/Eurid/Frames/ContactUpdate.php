@@ -21,6 +21,7 @@ class ContactUpdate extends Command
                                 <contact:street>%s</contact:street>
                                 <contact:street>%s</contact:street>
                                 <contact:city>%s</contact:city>
+                                <contact:sp>%s</contact:sp>
                                 <contact:pc>%s</contact:pc>
                                 <contact:cc>%s</contact:cc>
                             </contact:addr>
@@ -48,6 +49,7 @@ XML;
         $street2,
         $street3,
         $city,
+        $state_province,
         $postal_code,
         $country_code,
         $phone,
@@ -64,6 +66,7 @@ XML;
             $street2,
             $street3,
             $city,
+            $state_province,
             $postal_code,
             $country_code,
             $phone,

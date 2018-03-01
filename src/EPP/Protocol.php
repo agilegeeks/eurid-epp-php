@@ -12,7 +12,7 @@ class EPP_Protocol {
 
 		while (!$info['timed_out'] && !feof($socket)) {
 			// Try read remaining data from socket
-			$buffer = @fread($socket,$length - strlen($result));
+			$buffer = fread($socket,$length - strlen($result));
 			// If the buffer actually contains something then add it to the result
 			if ($buffer !== false) {
 				$result .= $buffer;
@@ -52,7 +52,7 @@ class EPP_Protocol {
 			$wlen = $length - $pos;
 			if ($wlen > 1024) { $wlen = 1024; }
 			// Try write remaining data from socket
-			$written = @fwrite($socket,substr($buffer,$pos),$wlen);
+			$written = fwrite($socket,substr($buffer,$pos),$wlen);
 			// If we read something, bump up the position
 			if ($written && $written !== false) {
 				$pos += $written;
