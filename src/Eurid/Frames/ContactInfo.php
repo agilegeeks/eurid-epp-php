@@ -53,6 +53,11 @@ XML;
             $result->org=null;
         }
         $result->city = $postalInfo_node->getElementsByTagName('city')->item(0)->firstChild->textContent;
+
+        if ($postalInfo_node->getElementsByTagName('sp')->length > 0) {
+            $result->sp = $postalInfo_node->getElementsByTagName('sp')->item(0)->firstChild->textContent;
+        }
+
         $result->pc = $postalInfo_node->getElementsByTagName('pc')->item(0)->firstChild->textContent;
         $result->cc = $postalInfo_node->getElementsByTagName('cc')->item(0)->firstChild->textContent;
         $result->street = array();
