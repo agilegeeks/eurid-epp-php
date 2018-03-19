@@ -17,6 +17,7 @@ use AgileGeeks\EPP\Eurid\Frames\DomainInfo;
 use AgileGeeks\EPP\Eurid\Frames\DomainUpdateNS;
 use AgileGeeks\EPP\Eurid\Frames\DomainRenew;
 use AgileGeeks\EPP\Eurid\Frames\DomainDelete;
+use AgileGeeks\EPP\Eurid\Frames\CheckBalance;
 
 require_once(__DIR__ . '/Eurid/Frames/autoload.php');
 require_once(__DIR__ . '/Eurid/Frame.php');
@@ -96,6 +97,14 @@ class Client extends EPP_Client
 
 	function checkContacts($contacts)
 	{
+	}
+
+	function checkBalance()
+	{
+		$this->debug("getting balance info");
+		$command = new CheckBalance();
+		$frame = new Frame($command);
+		return $this->request($frame);
 	}
 
 	function domainInfo($domain, $authInfo = NULL)
