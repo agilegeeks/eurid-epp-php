@@ -32,9 +32,9 @@ XML;
         $infData_node = $resData_node->getElementsByTagName('infData')->item(0);
         
         $result = new \stdClass();
-        $result->paymentMode = $infData_node->getElementsByTagName('paymentMode')->item(0);
-        $result->availableAmount = $infData_node->getElementsByTagName('availableAmount')->item(0);
-        $result->accountBalance = $infData_node->getElementsByTagName('paymentMode')->item(0);
+        $result->paymentMode = $infData_node->getElementsByTagName('paymentMode')->item(0)->firstChild->textContent;
+        $result->availableAmount = $infData_node->getElementsByTagName('availableAmount')->item(0)->firstChild->textContent;
+        $result->accountBalance = $infData_node->getElementsByTagName('paymentMode')->item(0)->firstChild->textContent;
 
         return $result;
     }
