@@ -17,6 +17,7 @@ use AgileGeeks\EPP\Eurid\Frames\DomainInfo;
 use AgileGeeks\EPP\Eurid\Frames\DomainUpdateNS;
 use AgileGeeks\EPP\Eurid\Frames\DomainRenew;
 use AgileGeeks\EPP\Eurid\Frames\DomainDelete;
+use AgileGeeks\EPP\Eurid\Frames\DomainTransfer;
 use AgileGeeks\EPP\Eurid\Frames\CheckBalance;
 
 require_once(__DIR__ . '/Eurid/Frames/autoload.php');
