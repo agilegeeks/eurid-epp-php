@@ -18,11 +18,20 @@ class DomainTransfer extends Command {
             </domain:authInfo>
           </domain:transfer>
         </transfer>
+        <extension>
+            <domain-ext:transfer xmlns:domain='urn:ietf:params:xml:ns:domain-1.0' xmlns:domain-ext='http://www.eurid.eu/xml/epp/domain-ext-2.1'>
+                <domain-ext:request>
+                    <domain-ext:registrant>%s</domain-ext:registrant>
+                    <domain-ext:contact type='billing'>%s</domain-ext:contact>
+                    <domain-ext:contact type='tech'>%s</domain-ext:contact>
+                </domain-ext:request>
+            </domain-ext:transfer>
+        </extension>
         <clTRID>%s</clTRID>
     </command>
 XML;
 
-    function __construct($domain, $pw, $period, $unit = 'y') {
+    function __construct($domain, $pw, $period, $cid, $billing, $tech, $unit = 'y') {
 
         $this->xml = sprintf(
             self::TEMPLATE,
@@ -30,6 +39,9 @@ XML;
             $unit,
             $period,
             $pw,
+            $cid,
+            $billing,
+            $tech,
             $this->clTRID()
         );
     }

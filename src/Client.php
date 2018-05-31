@@ -136,13 +136,16 @@ class Client extends EPP_Client
 	{
 	}
 
-	function domainTransferRequest($domain, $authInfo, $period, $unit = 'y')
+	function domainTransferRequest($domain, $authInfo, $period, $cid, $billing, $tech, $unit = 'y')
 	{
 		$this->debug("transfering domain");
 		$command = new DomainTransfer(
 			$domain,
 			$authInfo,
 			$period,
+			$cid,
+			$billing,
+			$tech,
 			$unit
 		);
 		$frame = new Frame($command);
@@ -370,7 +373,7 @@ class Client extends EPP_Client
 	{
 		if (!$this->debug) return true;
 		$args = func_get_args();
-		error_log(vsprintf(array_shift($args), $args));
+		log_message('error', vsprintf(array_shift($args), $args));
 	}
 
 	function __destruct()

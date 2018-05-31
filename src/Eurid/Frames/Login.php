@@ -23,6 +23,8 @@ class Login extends Command{
           <objURI>http://www.eurid.eu/xml/epp/keygroup-1.1</objURI>
           <objURI>http://www.eurid.eu/xml/epp/registrarFinance-1.0</objURI>
           <objURI>http://www.eurid.eu/xml/epp/registrarHitPoints-1.0</objURI>
+          <objURI>http://www.eurid.eu/xml/epp/registrationLimit-1.1</objURI>
+          <objURI>http://www.eurid.eu/xml/epp/dnssecEligibility-1.0</objURI>
           <svcExtension>
                 <extURI>http://www.eurid.eu/xml/epp/contact-ext-1.1</extURI>
                   <extURI>http://www.eurid.eu/xml/epp/domain-ext-2.1</extURI>
