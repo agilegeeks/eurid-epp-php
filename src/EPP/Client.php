@@ -38,7 +38,7 @@ class EPP_Client {
 	*/
 	
 	function connect($host, $port=700, $timeout=1, $ssl=true, $context=NULL) {
-		$target = sprintf('%s://%s:%d', ($ssl === true ? 'tls' : 'tcp'), $host, $port);
+		$target = sprintf('%s://%s:%d', ($ssl === true ? 'tlsv1.2' : 'tcp'), $host, $port);
 		if (is_resource($context)) {
 			$result = @stream_socket_client($target, $errno, $errstr, $timeout, STREAM_CLIENT_CONNECT, $context);
 
