@@ -50,6 +50,7 @@ XML;
         $extension_node = $dom->getElementsByTagName('extension')->item(0);
         $extension_infData_node = $extension_node->getElementsByTagName('infData')->item(0);
 
+        $result->nsgroup = $extension_infData_node->getElementsByTagName('nsgroup')->item(0)->firstChild->textContent;
         $result->name = $infData_node->getElementsByTagName('name')->item(0)->firstChild->textContent;
         $result->roid = $infData_node->getElementsByTagName('roid')->item(0)->firstChild->textContent;
         $result->status = $infData_node->getElementsByTagName('status')->item(0)->getAttribute('s');
