@@ -4,18 +4,11 @@ Eurid EPP SDK is a small library that allows you to connect with the EURid regis
 
 ## How to use
 
-This library was written using PHP's PSR-4 specification for autoloading. At the moment, the library is not available via composer repository, but if you are using composer to manage your dependecies, you can add it to your 'composer.json' like this:
+This library was written using PHP's PSR-4 specification for autoloading. The library is available via composer repository, you can add it to your 'composer.json' like this:
 
 ```
 ...
-"repositories": [
-    {
-        "type": "vcs",
-        "url":  "https://github.com/agilegeeks/eurid-epp-php.git"
-    }
-],
 "require": {
-    "php": ">=5.4",
     "agilegeeks/eurid-epp-php": "dev-master",
 },
 "autoload": {
