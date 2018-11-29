@@ -7,8 +7,13 @@
         {
             "name": "Radu Boncea",
             "email": "radu.boncea@gmail.com"
+        },
+        {
+            "name": "Alex Cristian Gheorghita",
+            "email": "cristiangheorghita1@gmail.com"
         }
     ],
+    "license": "ISC",
     "repositories": [
         {
             "type": "vcs",
