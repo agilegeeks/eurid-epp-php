@@ -50,7 +50,6 @@ XML;
         $extension_node = $dom->getElementsByTagName('extension')->item(0);
         $extension_infData_node = $extension_node->getElementsByTagName('infData')->item(0);
 
-        $result->nsgroup = $extension_infData_node->getElementsByTagName('nsgroup')->item(0)->firstChild->textContent;
         $result->name = $infData_node->getElementsByTagName('name')->item(0)->firstChild->textContent;
         $result->roid = $infData_node->getElementsByTagName('roid')->item(0)->firstChild->textContent;
         $result->status = $infData_node->getElementsByTagName('status')->item(0)->getAttribute('s');
@@ -68,6 +67,13 @@ XML;
         $result->suspended = $extension_infData_node->getElementsByTagName('suspended')->item(0)->firstChild->textContent === 'true'? true: false;
         $result->seized = $extension_infData_node->getElementsByTagName('seized')->item(0)->firstChild->textContent === 'true'? true: false;
         $result->delayed = $extension_infData_node->getElementsByTagName('delayed')->item(0)->firstChild->textContent === 'true'? true: false;
+
+        $result->nsgroup = '';
+        $nsgroup = $extension_infData_node->getElementsByTagName('nsgroup');
+
+        if ($nsgroup->length > 0) {
+            $result->nsgroup = $nsgroup->item(0)->firstChild->textContent;
+        }
         
         $result->delDate = '';
         $deletion_date = $extension_infData_node->getElementsByTagName('deletionDate');
