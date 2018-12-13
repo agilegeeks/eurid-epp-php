@@ -373,7 +373,12 @@ class Client extends EPP_Client
 	{
 		if (!$this->debug) return true;
 		$args = func_get_args();
-		log_message('error', vsprintf(array_shift($args), $args));
+
+		if (function_exists('log_message')) {
+			log_message('error', vsprintf(array_shift($args), $args));
+		} else {
+			fwrite(STDERR, print_r(vsprintf(array_shift($args), $args), true));
+		}
 	}
 
 	function __destruct()

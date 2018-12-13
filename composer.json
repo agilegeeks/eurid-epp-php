@@ -22,7 +22,8 @@
     },
     "autoload": {
         "psr-4": {
-            "AgileGeeks\\EPP\\Eurid\\": "src"
+            "AgileGeeks\\EPP\\Eurid\\": "src",
+            "AgileGeeks\\tests\\": "src\\tests"
          }
     }
 }
