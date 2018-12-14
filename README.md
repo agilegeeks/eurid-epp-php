@@ -49,7 +49,7 @@ die(var_dump($response));
 The library is not fully implemented. Feel free to submit a pull request if you find that it's missing something you may need, or simply add it as an issue and we will sort it out.
 
 ## License
-Copyright 2017 Agile Geeks SRL-D
+Copyright (c) 2018 Agile Geeks SRL-D
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 
