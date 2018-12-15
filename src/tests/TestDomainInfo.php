@@ -9,7 +9,6 @@ class TestDomainInfo extends BaseTestCase
     {
         include('config.php');
         $this->domain = 'testdom-'.self::randomnumber(10).'.eu';
-        $this->exDate = '';
         $this->client = new Eurid_Client(
             $host = $config['host'],
             $user = $config['user'],
@@ -21,36 +20,10 @@ class TestDomainInfo extends BaseTestCase
             $context = $config['context']
         );
         $this->client->login();
-        $this->registrant_id = $this->client->createContact(
-            $name = 'Ultra Geek',
-            $organization = '',
-            $street1 = 'Some street number and location',
-            $street2 = '',
-            $street3 = '',
-            $city = 'Bucuresti',
-            $state_province = 'Bucuresti',
-            $postal_code = '213333',
-            $country_code = 'RO',
-            $phone = '+40.762365542',
-            $fax = '',
-            $email = 'offie@agilegeeks.ro',
-            $contact_type = 'registrant'
-        );
-        $this->onsite_id = $this->client->createContact(
-            $name = 'Radu Boncea',
-            $organization = 'JUMP SRL',
-            $street1 = 'Some street number and location',
-            $street2 = '',
-            $street3 = '',
-            $city = 'Bucuresti',
-            $state_province = 'Bucuresti',
-            $postal_code = '213333',
-            $country_code = 'RO',
-            $phone = '+40.762365542',
-            $fax = '',
-            $email = 'radu@rotld.ro',
-            $contact_type = 'onsite'
-        );
+        $registrant = array_merge(self::$generic_contact, array('registrant'));
+        $onsite = array_merge(self::$generic_contact, array('onsite'));
+        $this->registrant_id = $this->client->createContact(...$registrant);
+        $this->onsite_id = $this->client->createContact(...$onsite);
         $this->client->createDomain(
             $domain = $this->domain,
             $period = 5,
@@ -69,7 +42,8 @@ class TestDomainInfo extends BaseTestCase
 
     protected function tearDown()
     {
-        $this->client->deleteDomain($this->domain, $this->exDate);
+        $res = $this->client->domainInfo($this->domain);
+        $this->client->deleteDomain($this->domain, $res->exDate);
         $this->client->logout();
     }
 
@@ -77,6 +51,5 @@ class TestDomainInfo extends BaseTestCase
     {
         $response = $this->client->domainInfo($this->domain);
         $this->assertEquals($this->domain, $response->name);
-        $this->exDate = $response->exDate;
     }
 }

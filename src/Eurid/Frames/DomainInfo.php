@@ -81,6 +81,17 @@ XML;
             $result->delDate = $deletion_date->item(0)->firstChild->textContent;
         }
         
+        $result->secDNS = '';
+        $secDNSInfData = $extension_node->getElementsByTagName('secDNS:infData');
+
+        if ($secDNSInfData->length > 0) {
+            die('here123894632694236429384692346923489');
+            $secDNS = $secDNSInfData->getElementsByTagName('keyData');
+
+            if ($secDNS->length > 0) {
+                $result->secDNS = $secDNS->item(0)->firstChild->textContent;
+            }
+        }
 
         foreach ($extension_infData_node->getElementsByTagName('contact') as $node) {
             $result->contacts[$node->getAttribute('type')] = $node->firstChild->textContent;

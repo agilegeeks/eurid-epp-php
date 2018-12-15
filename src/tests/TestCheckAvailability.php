@@ -9,7 +9,6 @@ class TestCheckAvailability extends BaseTestCase
     {
         include('config.php');
         $this->domain = 'testdom-'.self::randomnumber(10).'.eu';
-        $this->exDate = '';
         $this->client = new Eurid_Client(
             $host = $config['host'],
             $user = $config['user'],
@@ -22,8 +21,10 @@ class TestCheckAvailability extends BaseTestCase
         );
 
         $this->client->login();
-        $this->registrant_id = $this->client->createContact(...self::$generic_contact);
-        $this->onsite_id = $this->client->createContact(...self::$generic_contact);
+        $registrant = array_merge(self::$generic_contact, array('registrant'));
+        $onsite = array_merge(self::$generic_contact, array('onsite'));
+        $this->registrant_id = $this->client->createContact(...$registrant);
+        $this->onsite_id = $this->client->createContact(...$onsite);
         $this->client->createDomain(
             $domain = $this->domain,
             $period = 5,
@@ -42,7 +43,8 @@ class TestCheckAvailability extends BaseTestCase
 
     protected function tearDown()
     {
-        $this->client->deleteDomain($this->domain, $this->exDate);
+        $res = $this->client->domainInfo($this->domain);
+        $this->client->deleteDomain($this->domain, $res->exDate);
         $this->client->logout();
     }
 
@@ -52,23 +54,18 @@ class TestCheckAvailability extends BaseTestCase
         $available_domain = self::randomstring(21).'.eu';
         $response = $this->client->checkDomains($available_domain);
         $this->assertArrayHasKey($available_domain, $response);
-        $this->assertEquals('0', $response[$available_domain]);
+        $this->assertEquals(true, $response[$available_domain]);
 
         // Check a domain that is not available
         $response = $this->client->checkDomains($this->domain);
         $this->assertArrayHasKey($this->domain, $response);
-        $this->assertEquals('1', $response[$this->domain]);
+        $this->assertEquals(false, $response[$this->domain]);
 
         // Check multiple domains availability
-        $response = $this->client->checkDomains($this->domain.','.$available_domain);
+        $response = $this->client->checkDomains(array($this->domain, $available_domain));
         $this->assertArrayHasKey($available_domain, $response);
         $this->assertArrayHasKey($this->domain, $response);
-        $this->assertEquals('0', $response[$available_domain]);
-        $this->assertEquals('1', $response[$this->domain]);
-
-        // Check that an 'invalid domain' error is returned
-        $response = $this->client->checkDomains(self::randomString(21));
-        print_r($response);
-        $this->assertEquals('1', $response[$this->domain]);
+        $this->assertEquals(true, $response[$available_domain]);
+        $this->assertEquals(false, $response[$this->domain]);
     }
 }

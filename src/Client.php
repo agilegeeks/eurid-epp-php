@@ -19,6 +19,7 @@ use AgileGeeks\EPP\Eurid\Frames\DomainRenew;
 use AgileGeeks\EPP\Eurid\Frames\DomainDelete;
 use AgileGeeks\EPP\Eurid\Frames\DomainTransfer;
 use AgileGeeks\EPP\Eurid\Frames\CheckBalance;
+use AgileGeeks\EPP\Eurid\Frames\DomainAddDNSSEC;
 
 require_once(__DIR__ . '/Eurid/Frames/autoload.php');
 require_once(__DIR__ . '/Eurid/Frame.php');
@@ -252,6 +253,14 @@ class Client extends EPP_Client
 	{
 	}
 
+	function addDNSSEC($domain, $add)
+	{
+		$this->debug("adding dnssec");
+		$command = new DomainAddDNSSEC($domain, $add);
+		$frame = new Frame($command);
+		return $this->request($frame);
+	}
+
 	function updateNameservers($domain, $add, $rem)
 	{
 		$this->debug("updating domain nameservers");
@@ -355,7 +364,11 @@ class Client extends EPP_Client
 	{
 		$xml = parent::getFrame();
 		$this->xml = $xml;
-		foreach (explode("\n", str_replace('><', ">\n<", trim($xml))) as $line) $this->debug("S: %s", $line);
+		
+		foreach (explode("\n", str_replace('><', ">".PHP_EOL."<", trim($xml))) as $line) {
+			$this->debug("S: %s", $line);
+		}
+		
 		$dom = new \DOMDocument;
 		$dom->loadXML($this->xml);
 		return $dom;
@@ -365,7 +378,10 @@ class Client extends EPP_Client
 
 	function sendFrame($xml)
 	{
-		foreach (explode("\n", str_replace('><', ">\n<", trim($xml))) as $line) $this->debug("C: %s", $line);
+		foreach (explode("\n", str_replace('><', ">".PHP_EOL."<", trim($xml))) as $line) {
+			$this->debug("C: %s", $line);
+		}
+
 		return parent::sendFrame($xml);
 	}
 
@@ -377,7 +393,7 @@ class Client extends EPP_Client
 		if (function_exists('log_message')) {
 			log_message('error', vsprintf(array_shift($args), $args));
 		} else {
-			fwrite(STDERR, print_r(vsprintf(array_shift($args), $args), true));
+			fwrite(STDERR, vsprintf(array_shift($args), $args).PHP_EOL);
 		}
 	}
 

@@ -5,20 +5,19 @@ use PHPUnit\Framework\TestCase as TestCase;
 
 class BaseTestCase extends TestCase
 {
-    protected $generic_contact = array(
-        'name' => 'Ultra Geek',
-        'organization' => '',
-        'street1' => 'Some street number and location',
-        'street2' => '',
-        'street3' => '',
-        'city' => 'Bucuresti',
-        'state_province' => 'Bucuresti',
-        'postal_code' => '213333',
-        'country_code' => 'RO',
-        'phone' => '+40.762365542',
-        'fax' => '',
-        'email' => 'offie@agilegeeks.ro',
-        'contact_type' => 'registrant'
+    protected static $generic_contact = array(
+        'Ultra Geek',
+        '',
+        'Some street number and location',
+        '',
+        '',
+        'Bucuresti',
+        'Bucuresti',
+        '213333',
+        'RO',
+        '+40.762365542',
+        '',
+        'offie@agilegeeks.ro'
     );
 
     protected function setUp()
