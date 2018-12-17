@@ -19,7 +19,7 @@ use AgileGeeks\EPP\Eurid\Frames\DomainRenew;
 use AgileGeeks\EPP\Eurid\Frames\DomainDelete;
 use AgileGeeks\EPP\Eurid\Frames\DomainTransfer;
 use AgileGeeks\EPP\Eurid\Frames\CheckBalance;
-use AgileGeeks\EPP\Eurid\Frames\DomainAddDNSSEC;
+use AgileGeeks\EPP\Eurid\Frames\DomainUpdateDNSSEC;
 
 require_once(__DIR__ . '/Eurid/Frames/autoload.php');
 require_once(__DIR__ . '/Eurid/Frame.php');
@@ -253,10 +253,10 @@ class Client extends EPP_Client
 	{
 	}
 
-	function addDNSSEC($domain, $add)
+	function updateDNSSEC($domain, $add, $rem)
 	{
-		$this->debug("adding dnssec");
-		$command = new DomainAddDNSSEC($domain, $add);
+		$this->debug("updating dnssec data");
+		$command = new DomainUpdateDNSSEC($domain, $add, $rem);
 		$frame = new Frame($command);
 		return $this->request($frame);
 	}

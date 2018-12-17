@@ -3,7 +3,7 @@
 use AgileGeeks\tests\BaseTestCase as BaseTestCase;
 use AgileGeeks\EPP\Eurid\Client as Eurid_Client;
 
-class TestAddDNSSEC extends BaseTestCase
+class TestUpdateDNSSEC extends BaseTestCase
 {
     protected function setUp()
     {
@@ -44,20 +44,29 @@ class TestAddDNSSEC extends BaseTestCase
     protected function tearDown()
     {
         $res = $this->client->domainInfo($this->domain);
-        print_r($res);
         $this->client->deleteDomain($this->domain, $res->exDate);
         $this->client->logout();
     }
 
-    public function test_add_dnssec()
+    public function test_update_dnssec()
     {
         $ds_data = (object) array(
             'flags' => '256',
             'protocol' => '3',
-            'alg' => '5',
-            'pubKey' => 'AwEAAaW+suUu87YF+Hm3gHqyjvQbSSf8JxcP9+pWZGpqQtE1ZXJT9yIg i8hNM0mO7eIGjlHA9cXf/z5HESEA/vHx9F/HsnX7qsXd7dRfsd88VKo4 EkB0rPGK4jvw9BskJDioFZUXKPrmLXA/N01FKRZ5MWe5pUgNXnKa0yen TQgN5Paf'        
+            'alg' => '13',
+            'pubKey' => 'AwEAAaW+suUu87YF+Hm3gHqyjvQbSSf8JxcP9+pWZGpqQtE1ZXJT9yIgi8hNM0mO7eIGjlHA9cXf/z5HESEA/vHx9F/HsnX7qsXd7dRfsd88VKo4EkB0rPGK4jvw9BskJDioFZUXKPrmLXA/N01FKRZ5MWe5pUgNXnKa0yenTQgN5Paf'
         );
-        $response = $this->client->addDNSSEC($this->domain, array($ds_data));
-        print_r($response);
+        $this->client->updateDNSSEC($this->domain, array($ds_data), array());
+        $response = $this->client->domainInfo($this->domain);
+
+        $this->assertEquals($ds_data->flags, $response->secDNS[0]['flags']);
+        $this->assertEquals($ds_data->protocol, $response->secDNS[0]['protocol']);
+        $this->assertEquals($ds_data->alg, $response->secDNS[0]['alg']);
+        $this->assertEquals($ds_data->pubKey, $response->secDNS[0]['pubKey']);
+
+        $this->client->updateDNSSEC($this->domain, array(), array($ds_data));
+        $response = $this->client->domainInfo($this->domain);
+
+        $this->assertEquals('', $response->secDNS);
     }
 }

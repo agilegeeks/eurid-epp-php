@@ -3,9 +3,10 @@ namespace AgileGeeks\EPP\Eurid\Frames;
 
 use AgileGeeks\EPP\Eurid\Frames\Command;
 
-require_once(__DIR__.'/Command.php');
+require_once(__DIR__ . '/Command.php');
 
-class DomainInfo extends Command{
+class DomainInfo extends Command
+{
 
     const TEMPLATE = <<<XML
     <command>
@@ -19,36 +20,38 @@ class DomainInfo extends Command{
     </command>
 XML;
 
-    function __construct($domain, $authInfo=null) {
+    function __construct($domain, $authInfo = null)
+    {
         $authinfo_section = '';
-        if($authInfo!=null){
+        if ($authInfo != null) {
             $authinfo_section = "<domain:authInfo><domain:pw>{$authInfo}</domain:pw></domain:authInfo>";
         }
 
-        $this->xml = sprintf(self::TEMPLATE,
-                            $domain,
-                            $authinfo_section,
-                            $this->clTRID()
-                            );
+        $this->xml = sprintf(
+            self::TEMPLATE,
+            $domain,
+            $authinfo_section,
+            $this->clTRID()
+        );
     }
 
-    function getResult($dom){
+    function getResult($dom)
+    {
         parent::getResult($dom);
         $result = new \stdClass();
         $result->contacts = array(
-            'registrant'=>null,
-            'tech'=>null,
-            'onsite'=>null,
-            'billing'=>null,
-            'reseller'=>null
+            'registrant' => null,
+            'tech' => null,
+            'onsite' => null,
+            'billing' => null,
+            'reseller' => null
         );
-        $result->nameservers=array();
+        $result->nameservers = array();
 
         $resData_node = $dom->getElementsByTagName('resData')->item(0);
         $infData_node = $resData_node->getElementsByTagName('infData')->item(0);
         $domain_ns_node = $infData_node->getElementsByTagName('ns')->item(0);
         $extension_node = $dom->getElementsByTagName('extension')->item(0);
-        $extension_infData_node = $extension_node->getElementsByTagName('infData')->item(0);
 
         $result->name = $infData_node->getElementsByTagName('name')->item(0)->firstChild->textContent;
         $result->roid = $infData_node->getElementsByTagName('roid')->item(0)->firstChild->textContent;
@@ -60,13 +63,14 @@ XML;
         $result->crDate = $infData_node->getElementsByTagName('crDate')->item(0)->firstChild->textContent;
         $result->upDate = $infData_node->getElementsByTagName('upDate')->item(0)->firstChild->textContent;
         $result->exDate = $infData_node->getElementsByTagName('exDate')->item(0)->firstChild->textContent;
-        
 
-        $result->onHold = $extension_infData_node->getElementsByTagName('onHold')->item(0)->firstChild->textContent === 'true'? true: false;
-        $result->quarantined = $extension_infData_node->getElementsByTagName('quarantined')->item(0)->firstChild->textContent === 'true'? true: false;
-        $result->suspended = $extension_infData_node->getElementsByTagName('suspended')->item(0)->firstChild->textContent === 'true'? true: false;
-        $result->seized = $extension_infData_node->getElementsByTagName('seized')->item(0)->firstChild->textContent === 'true'? true: false;
-        $result->delayed = $extension_infData_node->getElementsByTagName('delayed')->item(0)->firstChild->textContent === 'true'? true: false;
+
+        $extension_infData_node = $extension_node->getElementsByTagNameNS('http://www.eurid.eu/xml/epp/domain-ext-2.1', 'infData')->item(0);
+        $result->onHold = $extension_infData_node->getElementsByTagName('onHold')->item(0)->firstChild->textContent === 'true' ? true : false;
+        $result->quarantined = $extension_infData_node->getElementsByTagName('quarantined')->item(0)->firstChild->textContent === 'true' ? true : false;
+        $result->suspended = $extension_infData_node->getElementsByTagName('suspended')->item(0)->firstChild->textContent === 'true' ? true : false;
+        $result->seized = $extension_infData_node->getElementsByTagName('seized')->item(0)->firstChild->textContent === 'true' ? true : false;
+        $result->delayed = $extension_infData_node->getElementsByTagName('delayed')->item(0)->firstChild->textContent === 'true' ? true : false;
 
         $result->nsgroup = '';
         $nsgroup = $extension_infData_node->getElementsByTagName('nsgroup');
@@ -74,29 +78,33 @@ XML;
         if ($nsgroup->length > 0) {
             $result->nsgroup = $nsgroup->item(0)->firstChild->textContent;
         }
-        
+
         $result->delDate = '';
         $deletion_date = $extension_infData_node->getElementsByTagName('deletionDate');
-        if ($deletion_date->length>0){
+        if ($deletion_date->length > 0) {
             $result->delDate = $deletion_date->item(0)->firstChild->textContent;
         }
-        
+
         $result->secDNS = '';
-        $secDNSInfData = $extension_node->getElementsByTagName('secDNS:infData');
+        $secDNSInfData = $extension_node->getElementsByTagNameNS('urn:ietf:params:xml:ns:secDNS-1.1', 'infData');
 
         if ($secDNSInfData->length > 0) {
-            die('here123894632694236429384692346923489');
-            $secDNS = $secDNSInfData->getElementsByTagName('keyData');
+            $temp = array();
 
-            if ($secDNS->length > 0) {
-                $result->secDNS = $secDNS->item(0)->firstChild->textContent;
+            foreach($secDNSInfData->item(0)->getElementsByTagName('keyData') as $secDNS) {
+               $temp['flags'] = $secDNS->getElementsByTagName('flags')->item(0)->firstChild->textContent;
+               $temp['protocol'] = $secDNS->getElementsByTagName('protocol')->item(0)->firstChild->textContent;
+               $temp['alg'] = $secDNS->getElementsByTagName('alg')->item(0)->firstChild->textContent;
+               $temp['pubKey'] = $secDNS->getElementsByTagName('pubKey')->item(0)->firstChild->textContent;
+
+               $result->secDNS[] = $temp;
             }
         }
 
         foreach ($extension_infData_node->getElementsByTagName('contact') as $node) {
             $result->contacts[$node->getAttribute('type')] = $node->firstChild->textContent;
         }
-        
+
         foreach ($infData_node->getElementsByTagName('contact') as $node) {
             $result->contacts[$node->getAttribute('type')] = $node->firstChild->textContent;
         }
@@ -111,13 +119,12 @@ XML;
                         $ips[] = $ip->textContent;
                     }
                 }
-                
+
                 $result->nameservers[$nameserver] = array('ips' => $ips);
             }
         }
-        
+
         return $result;
     }
 
 }
-?>
