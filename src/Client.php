@@ -253,7 +253,7 @@ class Client extends EPP_Client
 	{
 	}
 
-	function updateDNSSEC($domain, $add, $rem)
+	function updateDNSSEC($domain, $add=array(), $rem=array())
 	{
 		$this->debug("updating dnssec data");
 		$command = new DomainUpdateDNSSEC($domain, $add, $rem);
