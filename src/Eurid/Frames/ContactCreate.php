@@ -34,7 +34,7 @@ class ContactCreate extends Command{
         </contact:create>
       </create>
       <extension>
-        <contact-ext:create xmlns:contact-ext='http://www.eurid.eu/xml/epp/contact-ext-1.1'>
+        <contact-ext:create xmlns:contact-ext='http://www.eurid.eu/xml/epp/contact-ext-1.2'>
           <contact-ext:type>%s</contact-ext:type>
           <contact-ext:lang>en</contact-ext:lang>
         </contact-ext:create>
