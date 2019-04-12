@@ -61,7 +61,7 @@ XML;
             self::TEMPLATE,
             $id,
             $name,
-            $organization,
+            htmlentities($organization),
             $street1,
             $street2,
             $street3,
