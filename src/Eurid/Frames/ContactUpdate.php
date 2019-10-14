@@ -1,4 +1,5 @@
 <?php
+
 namespace AgileGeeks\EPP\Eurid\Frames;
 
 use AgileGeeks\EPP\Eurid\Frames\Command;
@@ -55,16 +56,15 @@ XML;
         $phone,
         $fax,
         $email
-    )
-    {
+    ) {
         $this->xml = sprintf(
             self::TEMPLATE,
             $id,
-            $name,
+            htmlentities($name),
             htmlentities($organization),
-            $street1,
-            $street2,
-            $street3,
+            htmlentities($street1),
+            htmlentities($street2),
+            htmlentities($street3),
             $city,
             $state_province,
             $postal_code,

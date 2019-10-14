@@ -58,11 +58,11 @@ XML;
     $contact_type)
   {
     $this->xml = sprintf(self::TEMPLATE,
-      $name,
-      $organization,
-      $street1,
-      $street2,
-      $street3,
+    htmlentities($name),
+    htmlentities($organization),
+    htmlentities($street1),
+    htmlentities($street2),
+    htmlentities($street3),
       $city,
       $state_province,
       $postal_code,
@@ -82,4 +82,3 @@ XML;
     return $contact_id;
   }
 }
-?>
