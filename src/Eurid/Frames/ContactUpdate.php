@@ -35,8 +35,9 @@ class ContactUpdate extends Command
             </update>
             <extension>
                 <contact-ext:update xmlns:contact-ext='http://www.eurid.eu/xml/epp/contact-ext-1.3'>
-                    <contact-ext:naturalPerson>%s</contact-ext:naturalPerson>
-                    <contact-ext:chg/>
+                    <contact-ext:chg>
+                        <contact-ext:naturalPerson>%s</contact-ext:naturalPerson>
+                    </contact-ext:chg>
                 </contact-ext:update>
             </extension>
         <clTRID>%s</clTRID>
