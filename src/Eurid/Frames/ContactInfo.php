@@ -1,11 +1,13 @@
 <?php
+
 namespace AgileGeeks\EPP\Eurid\Frames;
 
 use AgileGeeks\EPP\Eurid\Frames\Command;
 
-require_once(__DIR__.'/Command.php');
+require_once(__DIR__ . '/Command.php');
 
-class ContactInfo extends Command{
+class ContactInfo extends Command
+{
 
     const TEMPLATE = <<<XML
     <command>
@@ -18,14 +20,17 @@ class ContactInfo extends Command{
     </command>
 XML;
 
-    function __construct($contact_id) {
-        $this->xml = sprintf(self::TEMPLATE,
-                            $contact_id,
-                            $this->clTRID()
-                            );
+    function __construct($contact_id)
+    {
+        $this->xml = sprintf(
+            self::TEMPLATE,
+            $contact_id,
+            $this->clTRID()
+        );
     }
 
-    function getResult($dom){
+    function getResult($dom)
+    {
         parent::getResult($dom);
         //var_dump($dom->saveXML());exit;
         $result = new \stdClass();
@@ -33,7 +38,7 @@ XML;
         $infData_node = $resData_node->getElementsByTagName('infData')->item(0);
         $postalInfo_node = $infData_node->getElementsByTagName('postalInfo')->item(0);
         $extension_node = $dom->getElementsByTagName('extension')->item(0);
-        $extension_infData_node = $extension_node->getElementsByTagName('infData')->item(0);
+        $extension_infData_node = $extension_node->getElementsByTagNameNS('http://www.eurid.eu/xml/epp/contact-ext-1.3', 'infData')->item(0);
 
         $result->contact_id = $infData_node->getElementsByTagName('id')->item(0)->firstChild->textContent;
         $result->roid = $infData_node->getElementsByTagName('roid')->item(0)->firstChild->textContent;
@@ -47,10 +52,10 @@ XML;
 
 
         $result->name = $postalInfo_node->getElementsByTagName('name')->item(0)->firstChild->textContent;
-        if($postalInfo_node->getElementsByTagName('org')->length>0){
+        if ($postalInfo_node->getElementsByTagName('org')->length > 0) {
             $result->org = $postalInfo_node->getElementsByTagName('org')->item(0)->firstChild->textContent;
-        }else{
-            $result->org=null;
+        } else {
+            $result->org = null;
         }
         $result->city = $postalInfo_node->getElementsByTagName('city')->item(0)->firstChild->textContent;
 
@@ -65,8 +70,13 @@ XML;
             $result->street[] = $node->nodeValue;
         }
         $result->type = $extension_infData_node->getElementsByTagName('type')->item(0)->firstChild->textContent;
-        $result->natural_person = $extension_infData_node->getElementsByTagName('naturalPerson')->item(0)->firstChild->textContent;
+
+        if ($extension_infData_node->getElementsByTagName('naturalPerson')->length > 0) {
+            $result->natural_person = $extension_infData_node->getElementsByTagName('naturalPerson')->item(0)->firstChild->textContent;
+        } else {
+            $result->natural_person = null;
+        }
+
         return $result;
     }
-
 }
