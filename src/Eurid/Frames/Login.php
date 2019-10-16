@@ -1,13 +1,15 @@
 <?php
+
 namespace AgileGeeks\EPP\Eurid\Frames;
 
 use AgileGeeks\EPP\Eurid\Frames\Command;
 
-require_once(__DIR__.'/Command.php');
+require_once(__DIR__ . '/Command.php');
 
-class Login extends Command{
+class Login extends Command
+{
 
-    const TEMPLATE = <<<XML
+  const TEMPLATE = <<<XML
     <command>
       <login>
         <clID>%s</clID>
@@ -26,8 +28,8 @@ class Login extends Command{
           <objURI>http://www.eurid.eu/xml/epp/registrationLimit-1.1</objURI>
           <objURI>http://www.eurid.eu/xml/epp/dnssecEligibility-1.0</objURI>
           <svcExtension>
-                <extURI>http://www.eurid.eu/xml/epp/contact-ext-1.2</extURI>
-                  <extURI>http://www.eurid.eu/xml/epp/domain-ext-2.1</extURI>
+                <extURI>http://www.eurid.eu/xml/epp/contact-ext-1.3</extURI>
+                  <extURI>http://www.eurid.eu/xml/epp/domain-ext-2.3</extURI>
                   <extURI>urn:ietf:params:xml:ns:secDNS-1.1</extURI>
                   <extURI>http://www.eurid.eu/xml/epp/idn-1.0</extURI>
                   <extURI>http://www.eurid.eu/xml/epp/authInfo-1.1</extURI>
@@ -40,13 +42,13 @@ class Login extends Command{
     </command>
 XML;
 
-    function __construct($user,$pass) {
-        $this->xml = sprintf(self::TEMPLATE, $user, $pass, $this->clTRID());
-    }
+  function __construct($user, $pass)
+  {
+    $this->xml = sprintf(self::TEMPLATE, $user, $pass, $this->clTRID());
+  }
 
-    function getResult($dom){
-        return True;
-    }
-
+  function getResult($dom)
+  {
+    return True;
+  }
 }
-?>

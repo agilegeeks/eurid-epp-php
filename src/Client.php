@@ -1,4 +1,5 @@
 <?php
+
 namespace AgileGeeks\EPP\Eurid;
 
 use AgileGeeks\EPP\EPP_Client;
@@ -28,380 +29,362 @@ require_once(__DIR__ . '/Eurid/Response.php');
 
 class Client extends EPP_Client
 {
-	private $connected;
-	private $logged_in;
-	private $user;
-	private $result;
+    private $connected;
+    private $logged_in;
+    private $user;
+    private $result;
 
-	var $debug;
-	var $greeting;
+    var $debug;
+    var $greeting;
 
-	/**
-	 * @param string $host
-	 * @param string $user
-	 * @param string $pass
-	 * @param boolean $debug
-	 * @param integer $port
-	 * @param integer timeout
-	 * @param boolean $ssl
-	 * @param resource $context
-	 * @throws Net_EPP_Exception
-	 */
-	function __construct($host = NULL, $user = NULL, $pass = NULL, $debug = false, $port = 700, $timeout = 1, $ssl = true, $context = NULL)
-	{
-		$this->connected = false;
-		$this->logged_in = false;
-		$this->debug = $debug;
-		$this->user = $user;
-		$this->pass = $pass;
+    /**
+     * @param string $host
+     * @param string $user
+     * @param string $pass
+     * @param boolean $debug
+     * @param integer $port
+     * @param integer timeout
+     * @param boolean $ssl
+     * @param resource $context
+     * @throws Net_EPP_Exception
+     */
+    function __construct($host = NULL, $user = NULL, $pass = NULL, $debug = false, $port = 700, $timeout = 1, $ssl = true, $context = NULL)
+    {
+        $this->connected = false;
+        $this->logged_in = false;
+        $this->debug = $debug;
+        $this->user = $user;
+        $this->pass = $pass;
 
-		if ($host) {
-			try {
-				$this->connect($host, $port, $timeout, $ssl, $context);
-			} catch (EPP_Exception $e) {
-				throw new \Exception ($e->getMessage());
-			}
-		}
-		//if ($user && $pass) $this->login($user, $pass);
-	}
+        if ($host) {
+            try {
+                $this->connect($host, $port, $timeout, $ssl, $context);
+            } catch (EPP_Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+        }
+        //if ($user && $pass) $this->login($user, $pass);
+    }
 
-	function getResult()
-	{
-		return $this->result;
-	}
+    function getResult()
+    {
+        return $this->result;
+    }
 
-	function greeting()
-	{
-		$command = new Greeting();
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
+    function greeting()
+    {
+        $command = new Greeting();
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-	function login()
-	{
-		$this->debug("attempting login");
-		$command = new Login($this->user, $this->pass);
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
+    function login()
+    {
+        $this->debug("attempting login");
+        $command = new Login($this->user, $this->pass);
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-	function checkDomains($domains)
-	{
-		$this->debug("checking domains");
-		$command = new DomainCheck($domains);
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
+    function checkDomains($domains)
+    {
+        $this->debug("checking domains");
+        $command = new DomainCheck($domains);
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-	function checkHosts($host)
-	{
-	}
+    function checkHosts($host)
+    { }
 
-	function checkContacts($contacts)
-	{
-	}
+    function checkContacts($contacts)
+    { }
 
-	function checkBalance()
-	{
-		$this->debug("getting balance info");
-		$command = new CheckBalance();
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
+    function checkBalance()
+    {
+        $this->debug("getting balance info");
+        $command = new CheckBalance();
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-	function domainInfo($domain, $authInfo = NULL)
-	{
-		$this->debug("getting contact info");
-		$command = new DomainInfo($domain, $authInfo);
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
+    function domainInfo($domain, $authInfo = NULL)
+    {
+        $this->debug("getting contact info");
+        $command = new DomainInfo($domain, $authInfo);
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-	function hostInfo($host, $authInfo = NULL)
-	{
-	}
+    function hostInfo($host, $authInfo = NULL)
+    { }
 
-	function contactInfo($contact, $authInfo = NULL)
-	{
-		$this->debug("getting contact info");
-		$command = new ContactInfo($contact);
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
+    function contactInfo($contact, $authInfo = NULL)
+    {
+        $this->debug("getting contact info");
+        $command = new ContactInfo($contact);
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-	function domainTransferQuery($domain)
-	{
-	}
+    function domainTransferQuery($domain)
+    { }
 
-	function domainTransferCancel($domain)
-	{
-	}
+    function domainTransferCancel($domain)
+    { }
 
-	function domainTransferRequest($domain, $authInfo, $period, $cid, $billing, $tech, $unit = 'y')
-	{
-		$this->debug("transfering domain");
-		$command = new DomainTransfer(
-			$domain,
-			$authInfo,
-			$period,
-			$cid,
-			$billing,
-			$tech,
-			$unit
-		);
-		$frame = new Frame($command);
-		
-		return $this->request($frame);
-	}
+    function domainTransferRequest($domain, $authInfo, $period, $cid, $billing, $tech, $unit = 'y')
+    {
+        $this->debug("transfering domain");
+        $command = new DomainTransfer(
+            $domain,
+            $authInfo,
+            $period,
+            $cid,
+            $billing,
+            $tech,
+            $unit
+        );
+        $frame = new Frame($command);
 
-	function domainTransferApprove($domain)
-	{
-	}
+        return $this->request($frame);
+    }
 
-	function domainTransferReject($domain)
-	{
-	}
+    function domainTransferApprove($domain)
+    { }
 
-	function contactTransferQuery($contact)
-	{
-	}
+    function domainTransferReject($domain)
+    { }
 
-	function contactTransferCancel($contact)
-	{
-	}
+    function contactTransferQuery($contact)
+    { }
 
-	function contactTransferRequest($contact, $authInfo)
-	{
-	}
+    function contactTransferCancel($contact)
+    { }
 
-	function contactTransferApprove($contact)
-	{
-	}
+    function contactTransferRequest($contact, $authInfo)
+    { }
 
-	function contactTransferReject($contact)
-	{
-	}
+    function contactTransferApprove($contact)
+    { }
 
-	function createDomain(
-		$domain,
-		$period,
-		$registrant_cid,
-		$contact_tech_cid,
-		$contact_billing_cid,
-		$contact_onsite_cid,
-		$contact_reseller_cid,
-		$nameservers = array()
-	)
-	{
-		$this->debug("creating domain");
-		$command = new DomainCreate(
-			$domain,
-			$period,
-			$registrant_cid,
-			$contact_tech_cid,
-			$contact_billing_cid,
-			$contact_onsite_cid,
-			$contact_reseller_cid,
-			$nameservers
-		);
-		$frame = new Frame($command);
-		return $this->request($frame);
+    function contactTransferReject($contact)
+    { }
 
-	}
+    function createDomain(
+        $domain,
+        $period,
+        $registrant_cid,
+        $contact_tech_cid,
+        $contact_billing_cid,
+        $contact_onsite_cid,
+        $contact_reseller_cid,
+        $nameservers = array()
+    ) {
+        $this->debug("creating domain");
+        $command = new DomainCreate(
+            $domain,
+            $period,
+            $registrant_cid,
+            $contact_tech_cid,
+            $contact_billing_cid,
+            $contact_onsite_cid,
+            $contact_reseller_cid,
+            $nameservers
+        );
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-	function createHost($host)
-	{
-	}
+    function createHost($host)
+    { }
 
-	function createContact(
-		$name,
-		$organization,
-		$street1,
-		$street2,
-		$street3,
-		$city,
-		$state_province,
-		$postal_code,
-		$country_code,
-		$phone,
-		$fax,
-		$email,
-		$contact_type = 'registrant'
-	)
-	{
-		$this->debug("creating contact");
-		$command = new ContactCreate(
-			$name,
-			$organization,
-			$street1,
-			$street2,
-			$street3,
-			$city,
-			$state_province,
-			$postal_code,
-			$country_code,
-			$phone,
-			$fax,
-			$email,
-			$contact_type
-		);
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
-
-	function updateDomain($domain, $add, $rem, $chg)
-	{
-	}
-
-	function updateDNSSEC($domain, $add=array(), $rem=array())
-	{
-		$this->debug("updating dnssec data");
-		$command = new DomainUpdateDNSSEC($domain, $add, $rem);
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
-
-	function updateNameservers($domain, $add, $rem)
-	{
-		$this->debug("updating domain nameservers");
-		$command = new DomainUpdateNS($domain, $add, $rem);
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
-
-	function updateContact(
-		$id,
+    function createContact(
         $name,
         $organization,
         $street1,
         $street2,
         $street3,
-		$city,
-		$state_province,
+        $city,
+        $state_province,
         $postal_code,
         $country_code,
         $phone,
         $fax,
-        $email
-	)
-	{
-		$this->debug("updating contact");
-		$command = new ContactUpdate(
-			$id,
-			$name,
-			$organization,
-			$street1,
-			$street2,
-			$street3,
-			$city,
-			$state_province,
-			$postal_code,
-			$country_code,
-			$phone,
-			$fax,
-			$email);
+        $email,
+        $natural_person,
+        $contact_type = 'registrant'
+    ) {
+        $this->debug("creating contact");
+        $command = new ContactCreate(
+            $name,
+            $organization,
+            $street1,
+            $street2,
+            $street3,
+            $city,
+            $state_province,
+            $postal_code,
+            $country_code,
+            $phone,
+            $fax,
+            $email,
+            $contact_type,
+            $natural_person
+        );
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
+    function updateDomain($domain, $add, $rem, $chg)
+    { }
 
-	function updateHost($host, $add, $rem, $chg)
-	{
-	}
+    function updateDNSSEC($domain, $add = array(), $rem = array())
+    {
+        $this->debug("updating dnssec data");
+        $command = new DomainUpdateDNSSEC($domain, $add, $rem);
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-	function deleteDomain($domain, $delDate)
-	{
-		$this->debug("setting deletion date for domain");
-		$command = new DomainDelete($domain, $delDate);
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
+    function updateNameservers($domain, $add, $rem)
+    {
+        $this->debug("updating domain nameservers");
+        $command = new DomainUpdateNS($domain, $add, $rem);
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-	function deleteHost($host)
-	{
-	}
+    function updateContact(
+        $id,
+        $name,
+        $organization,
+        $street1,
+        $street2,
+        $street3,
+        $city,
+        $state_province,
+        $postal_code,
+        $country_code,
+        $phone,
+        $fax,
+        $email,
+        $natural_person
+    ) {
+        $this->debug("updating contact");
+        $command = new ContactUpdate(
+            $id,
+            $name,
+            $organization,
+            $street1,
+            $street2,
+            $street3,
+            $city,
+            $state_province,
+            $postal_code,
+            $country_code,
+            $phone,
+            $fax,
+            $email,
+            $natural_person
+        );
 
-	function deleteContact($contact)
-	{
-	}
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-	function renewDomain($domain, $period, $curExpDate, $unit = 'y')
-	{
-		$this->debug("renewing domain");
-		$command = new DomainRenew($domain, $period, $curExpDate, $unit);
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
+    function updateHost($host, $add, $rem, $chg)
+    { }
 
-	function request($frame)
-	{
-		$this->sendFrame($frame->getXML());
-		$dom = $this->getFrame();
-		$this->result = new Response($dom);
-		$response = $frame->getResult($dom);
-		return $response;
-	}
+    function deleteDomain($domain, $delDate)
+    {
+        $this->debug("setting deletion date for domain");
+        $command = new DomainDelete($domain, $delDate);
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
 
-	function logout()
-	{
-		$this->debug("logging out");
-		$command = new Logout($this->user, $this->pass);
-		$frame = new Frame($command);
-		return $this->request($frame);
-	}
+    function deleteHost($host)
+    { }
 
-	function connect($host, $port = 700, $timeout = 1, $ssl = true, $context = NULL)
-	{
-		$this->debug("attempting to connect to %s:%d", $host, $port);
-		$dom = parent::connect($host, $port, $timeout, $ssl, $context);
-		$this->debug("connected OK");
-		$this->connected = true;
+    function deleteContact($contact)
+    { }
+
+    function renewDomain($domain, $period, $curExpDate, $unit = 'y')
+    {
+        $this->debug("renewing domain");
+        $command = new DomainRenew($domain, $period, $curExpDate, $unit);
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
+
+    function request($frame)
+    {
+        $this->sendFrame($frame->getXML());
+        $dom = $this->getFrame();
+        $this->result = new Response($dom);
+        $response = $frame->getResult($dom);
+        return $response;
+    }
+
+    function logout()
+    {
+        $this->debug("logging out");
+        $command = new Logout($this->user, $this->pass);
+        $frame = new Frame($command);
+        return $this->request($frame);
+    }
+
+    function connect($host, $port = 700, $timeout = 1, $ssl = true, $context = NULL)
+    {
+        $this->debug("attempting to connect to %s:%d", $host, $port);
+        $dom = parent::connect($host, $port, $timeout, $ssl, $context);
+        $this->debug("connected OK");
+        $this->connected = true;
         //return $this->greeting();
 
-	}
+    }
 
-	function getFrame()
-	{
-		$xml = parent::getFrame();
-		$this->xml = $xml;
-		
-		foreach (explode("\n", str_replace('><', ">".PHP_EOL."<", trim($xml))) as $line) {
-			$this->debug("S: %s", $line);
-		}
-		
-		$dom = new \DOMDocument;
-		$dom->loadXML($this->xml);
-		return $dom;
+    function getFrame()
+    {
+        $xml = parent::getFrame();
+        $this->xml = $xml;
 
-	}
+        foreach (explode("\n", str_replace('><', ">" . PHP_EOL . "<", trim($xml))) as $line) {
+            $this->debug("S: %s", $line);
+        }
+
+        $dom = new \DOMDocument;
+        $dom->loadXML($this->xml);
+        return $dom;
+    }
 
 
-	function sendFrame($xml)
-	{
-		foreach (explode("\n", str_replace('><', ">".PHP_EOL."<", trim($xml))) as $line) {
-			$this->debug("C: %s", $line);
-		}
+    function sendFrame($xml)
+    {
+        foreach (explode("\n", str_replace('><', ">" . PHP_EOL . "<", trim($xml))) as $line) {
+            $this->debug("C: %s", $line);
+        }
 
-		return parent::sendFrame($xml);
-	}
+        return parent::sendFrame($xml);
+    }
 
-	protected function debug()
-	{
-		if (!$this->debug) return true;
-		$args = func_get_args();
+    protected function debug()
+    {
+        if (!$this->debug) return true;
+        $args = func_get_args();
 
-		if (function_exists('log_message')) {
-			log_message('error', vsprintf(array_shift($args), $args));
-		} else {
-			fwrite(STDERR, vsprintf(array_shift($args), $args).PHP_EOL);
-		}
-	}
+        if (function_exists('log_message')) {
+            log_message('error', vsprintf(array_shift($args), $args));
+        } else {
+            fwrite(STDERR, vsprintf(array_shift($args), $args) . PHP_EOL);
+        }
+    }
 
-	function __destruct()
-	{
-		if ($this->logged_in) $this->logout();
-		$this->debug("disconnecting from server");
-		$this->disconnect();
-	}
-
+    function __destruct()
+    {
+        if ($this->logged_in) $this->logout();
+        $this->debug("disconnecting from server");
+        $this->disconnect();
+    }
 }

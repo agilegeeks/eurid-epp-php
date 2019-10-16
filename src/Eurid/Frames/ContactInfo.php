@@ -65,8 +65,8 @@ XML;
             $result->street[] = $node->nodeValue;
         }
         $result->type = $extension_infData_node->getElementsByTagName('type')->item(0)->firstChild->textContent;
+        $result->natural_person = $extension_infData_node->getElementsByTagName('naturalPerson')->item(0)->firstChild->textContent;
         return $result;
     }
 
 }
-?>

@@ -1,4 +1,5 @@
 <?php
+
 namespace AgileGeeks\EPP\Eurid\Frames;
 
 use AgileGeeks\EPP\Eurid\Frames\Command;
@@ -65,7 +66,7 @@ XML;
         $result->exDate = $infData_node->getElementsByTagName('exDate')->item(0)->firstChild->textContent;
 
 
-        $extension_infData_node = $extension_node->getElementsByTagNameNS('http://www.eurid.eu/xml/epp/domain-ext-2.1', 'infData')->item(0);
+        $extension_infData_node = $extension_node->getElementsByTagNameNS('http://www.eurid.eu/xml/epp/domain-ext-2.3', 'infData')->item(0);
         $result->onHold = $extension_infData_node->getElementsByTagName('onHold')->item(0)->firstChild->textContent === 'true' ? true : false;
         $result->quarantined = $extension_infData_node->getElementsByTagName('quarantined')->item(0)->firstChild->textContent === 'true' ? true : false;
         $result->suspended = $extension_infData_node->getElementsByTagName('suspended')->item(0)->firstChild->textContent === 'true' ? true : false;
@@ -91,13 +92,13 @@ XML;
         if ($secDNSInfData->length > 0) {
             $temp = array();
 
-            foreach($secDNSInfData->item(0)->getElementsByTagName('keyData') as $secDNS) {
-               $temp['flags'] = $secDNS->getElementsByTagName('flags')->item(0)->firstChild->textContent;
-               $temp['protocol'] = $secDNS->getElementsByTagName('protocol')->item(0)->firstChild->textContent;
-               $temp['alg'] = $secDNS->getElementsByTagName('alg')->item(0)->firstChild->textContent;
-               $temp['pubKey'] = $secDNS->getElementsByTagName('pubKey')->item(0)->firstChild->textContent;
+            foreach ($secDNSInfData->item(0)->getElementsByTagName('keyData') as $secDNS) {
+                $temp['flags'] = $secDNS->getElementsByTagName('flags')->item(0)->firstChild->textContent;
+                $temp['protocol'] = $secDNS->getElementsByTagName('protocol')->item(0)->firstChild->textContent;
+                $temp['alg'] = $secDNS->getElementsByTagName('alg')->item(0)->firstChild->textContent;
+                $temp['pubKey'] = $secDNS->getElementsByTagName('pubKey')->item(0)->firstChild->textContent;
 
-               $result->secDNS[] = $temp;
+                $result->secDNS[] = $temp;
             }
         }
 
@@ -126,5 +127,4 @@ XML;
 
         return $result;
     }
-
 }
