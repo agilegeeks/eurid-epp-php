@@ -17,21 +17,35 @@ class DomainInfo extends Command
           </domain:info>
           %s
         </info>
+        %s
         <clTRID>%s</clTRID>
     </command>
 XML;
 
-    function __construct($domain, $authInfo = null)
+    function __construct($domain, $authInfo = null, $requestAuthInfo = false)
     {
         $authinfo_section = '';
         if ($authInfo != null) {
             $authinfo_section = "<domain:authInfo><domain:pw>{$authInfo}</domain:pw></domain:authInfo>";
         }
 
+        /* request EPP Auth Code */
+        $extension_section = '';
+        if ($requestAuthInfo) {
+            $extension_section = <<<EOM
+        <extension>
+          <authInfo:info xmlns:authInfo="http://www.eurid.eu/xml/epp/authInfo-1.1">
+            <authInfo:request/>
+          </authInfo:info>
+        </extension>
+EOM;
+        }
+
         $this->xml = sprintf(
             self::TEMPLATE,
             $domain,
             $authinfo_section,
+            $extension_section,
             $this->clTRID()
         );
     }
@@ -65,6 +79,15 @@ XML;
         $result->upDate = $infData_node->getElementsByTagName('upDate')->item(0)->firstChild->textContent;
         $result->exDate = $infData_node->getElementsByTagName('exDate')->item(0)->firstChild->textContent;
 
+        /* domain:pw node has the EPP transfer key */
+        $hasAuthPW = $infData_node->getElementsByTagName('pw');
+        if ($hasAuthPW->length) {
+            $result->authPW = $infData_node->getElementsByTagName('pw')->item(0)->firstChild->textContent;
+
+            /* node authInfo:validUntil has the Expiration date for the EPP key */
+            $extension_auth_infoData_node = $extension_node->getElementsByTagNameNS('http://www.eurid.eu/xml/epp/authInfo-1.1', 'infData')->item(0);
+            $result->authValidUntil = $extension_auth_infoData_node->getElementsByTagName('validUntil')->item(0)->firstChild->textContent;
+        }
 
         $extension_infData_node = $extension_node->getElementsByTagNameNS('http://www.eurid.eu/xml/epp/domain-ext-2.3', 'infData')->item(0);
         $result->onHold = $extension_infData_node->getElementsByTagName('onHold')->item(0)->firstChild->textContent === 'true' ? true : false;
