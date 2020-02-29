@@ -108,10 +108,10 @@ class Client extends EPP_Client
         return $this->request($frame);
     }
 
-    function domainInfo($domain, $authInfo = NULL)
+    function domainInfo($domain, $authInfo = NULL, $requestAuthInfo = false)
     {
         $this->debug("getting contact info");
-        $command = new DomainInfo($domain, $authInfo);
+        $command = new DomainInfo($domain, $authInfo, $requestAuthInfo);
         $frame = new Frame($command);
         return $this->request($frame);
     }
