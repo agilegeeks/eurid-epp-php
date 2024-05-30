@@ -21,7 +21,7 @@ class DomainTransfer extends Command
           </domain:transfer>
         </transfer>
         <extension>
-            <domain-ext:transfer xmlns:domain='urn:ietf:params:xml:ns:domain-1.0' xmlns:domain-ext='http://www.eurid.eu/xml/epp/domain-ext-2.3'>
+            <domain-ext:transfer xmlns:domain='urn:ietf:params:xml:ns:domain-1.0' xmlns:domain-ext='http://www.eurid.eu/xml/epp/domain-ext-2.6'>
                 <domain-ext:request>
                     <domain-ext:registrant>%s</domain-ext:registrant>
                     <domain-ext:contact type='billing'>%s</domain-ext:contact>

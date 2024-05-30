@@ -57,7 +57,7 @@ XML;
 
         $contact_extension = '';
         if ($contact_onsite_cid!=null || $contact_reseller_cid!=null){
-            $contact_extension = "<extension><domain-ext:create xmlns:domain-ext='http://www.eurid.eu/xml/epp/domain-ext-2.3'>";
+            $contact_extension = "<extension><domain-ext:create xmlns:domain-ext='http://www.eurid.eu/xml/epp/domain-ext-2.6'>";
             if ($contact_onsite_cid!=null){
                 $contact_extension.= "<domain-ext:contact type='onsite'>{$contact_onsite_cid}</domain-ext:contact>";
             }

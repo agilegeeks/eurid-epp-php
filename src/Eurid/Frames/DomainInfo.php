@@ -89,7 +89,7 @@ EOM;
             $result->authValidUntil = $extension_auth_infoData_node->getElementsByTagName('validUntil')->item(0)->firstChild->textContent;
         }
 
-        $extension_infData_node = $extension_node->getElementsByTagNameNS('http://www.eurid.eu/xml/epp/domain-ext-2.3', 'infData')->item(0);
+        $extension_infData_node = $extension_node->getElementsByTagNameNS('http://www.eurid.eu/xml/epp/domain-ext-2.6', 'infData')->item(0);
         $result->onHold = $extension_infData_node->getElementsByTagName('onHold')->item(0)->firstChild->textContent === 'true' ? true : false;
         $result->quarantined = $extension_infData_node->getElementsByTagName('quarantined')->item(0)->firstChild->textContent === 'true' ? true : false;
         $result->suspended = $extension_infData_node->getElementsByTagName('suspended')->item(0)->firstChild->textContent === 'true' ? true : false;
