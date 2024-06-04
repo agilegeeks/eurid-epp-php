@@ -37,6 +37,7 @@ class ContactUpdate extends Command
                 <contact-ext:update xmlns:contact-ext='http://www.eurid.eu/xml/epp/contact-ext-1.3'>
                     <contact-ext:chg>
                         <contact-ext:naturalPerson>%s</contact-ext:naturalPerson>
+                        <contact-ext:countryOfCitizenship>%s</contact-ext:countryOfCitizenship>
                     </contact-ext:chg>
                 </contact-ext:update>
             </extension>
@@ -58,7 +59,8 @@ XML;
         $phone,
         $fax,
         $email,
-        $natural_person
+        $natural_person,
+        $country_of_citizenship
     ) {
         $this->xml = sprintf(
             self::TEMPLATE,
@@ -76,6 +78,7 @@ XML;
             $fax,
             $email,
             $natural_person,
+            $country_of_citizenship,
             $this->clTRID()
         );
     }

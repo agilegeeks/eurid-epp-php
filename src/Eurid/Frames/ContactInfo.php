@@ -77,6 +77,12 @@ XML;
             $result->natural_person = null;
         }
 
+        if ($extension_infData_node->getElementsByTagName('countryOfCitizenship')->length > 0) {
+            $result->country_of_citizenship = $extension_infData_node->getElementsByTagName('countryOfCitizenship')->item(0)->firstChild->textContent;
+        } else {
+            $result->country_of_citizenship = null;
+        }
+
         return $result;
     }
 }

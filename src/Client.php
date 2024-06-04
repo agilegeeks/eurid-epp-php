@@ -213,6 +213,7 @@ class Client extends EPP_Client
         $fax,
         $email,
         $natural_person,
+        $country_of_citizenship = '',
         $contact_type = 'registrant'
     ) {
         $this->debug("creating contact");
@@ -230,7 +231,8 @@ class Client extends EPP_Client
             $fax,
             $email,
             $contact_type,
-            $natural_person
+            $natural_person,
+            $country_of_citizenship
         );
         $frame = new Frame($command);
         return $this->request($frame);
@@ -269,7 +271,8 @@ class Client extends EPP_Client
         $phone,
         $fax,
         $email,
-        $natural_person
+        $natural_person,
+        $country_of_citizenship
     ) {
         $this->debug("updating contact");
         $command = new ContactUpdate(
@@ -286,7 +289,8 @@ class Client extends EPP_Client
             $phone,
             $fax,
             $email,
-            $natural_person
+            $natural_person,
+            $country_of_citizenship
         );
 
         $frame = new Frame($command);

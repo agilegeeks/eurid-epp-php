@@ -40,6 +40,7 @@ class ContactCreate extends Command
           <contact-ext:type>%s</contact-ext:type>
           <contact-ext:lang>en</contact-ext:lang>
           <contact-ext:naturalPerson>%s</contact-ext:naturalPerson>
+          <contact-ext:countryOfCitizenship>%s</contact-ext:countryOfCitizenship>
         </contact-ext:create>
       </extension>
       <clTRID>%s</clTRID>
@@ -60,7 +61,8 @@ XML;
     $fax,
     $email,
     $contact_type,
-    $natural_person
+    $natural_person,
+    $country_of_citizenship
   ) {
     $this->xml = sprintf(
       self::TEMPLATE,
@@ -78,6 +80,7 @@ XML;
       $email,
       $contact_type,
       $natural_person,
+      $country_of_citizenship,
       $this->clTRID()
     );
   }
